@@ -1,93 +1,114 @@
-🌿 Smart Greenhouse Controller – Environmental Regulation Using PIC18F45K22
-A compact embedded system designed to automate environmental control in greenhouses by simulating and regulating temperature, humidity, and CO₂ levels using sensor inputs, actuator logic, and UART-based monitoring — ideal for closed-loop plant habitat management.
+# 🌿 Smart Greenhouse Controller – Environmental Regulation Using PIC18F45K22
 
-🛠️ Technologies Used
-Microcontroller Unit (MCU): PIC18F45K22
+A compact embedded system for greenhouse automation that simulates and regulates temperature, humidity, and CO₂ levels using sensor inputs, actuator control, and UART-based communication for system monitoring.
 
-Development Environment: MPLAB IDE (Legacy)
+---
 
-Programming Language: Embedded C
+## 🛠️ Technologies Used
 
-Debugging Tools: PICkit 3, MPLAB Simulator (Breakpoints, Watch Window)
+- **Microcontroller Unit (MCU):** PIC18F45K22  
+- **Development Environment:** MPLAB IDE (Legacy)  
+- **Programming Language:** Embedded C  
+- **Debugging Tools:** PICkit 3, MPLAB Simulator (Breakpoints, Watch Window)  
+- **Peripherals & Interfaces:**  
+  - ADC for sensor input (3x 10k potentiometers)  
+  - PWM for damper stepper motor control  
+  - UART2 for communication (9600 baud)  
+  - GPIO for actuator outputs (fan, heater, cooler, sprinkler)  
+  - Timers & Interrupts for real-time event handling
 
-Interfaces & Peripherals:
+---
 
-ADC for analog sensor input (3x 10k potentiometers)
+## 🔩 Deliverables
 
-GPIO for actuator control (Fan, Heater, Cooler, Sprinkler)
+### 1. 🌡️ Environmental Monitoring & Control
 
-PWM & GPIO sequence for stepper motor
+- **Simulated Sensors:**  
+  3 x 10k potentiometers represent temperature, humidity, and CO₂ levels.  
+- **Analog Sensing:**  
+  Read via ADC channels and compared with predefined setpoints.  
+- **Output Control:**  
+  - Fan, Heater, Cooler, and Sprinkler are turned ON/OFF based on sensor thresholds.  
+  - Control logic supports both **interrupt** and **polling** mechanisms.
 
-UART2 (9600 baud) for system monitoring
+---
 
-Timers & Interrupts for real-time control
+### 2. 🔄 Stepper Motor-Based Damper Adjustment
 
-🔩 Deliverables
-1. 🌡️ Environmental Monitoring & Control
-Sensor Simulation: 3x 10k potentiometers simulate temperature, humidity, and CO₂ levels.
+- **Purpose:**  
+  Adjusts air circulation dynamically using a stepper motor-driven damper.  
+- **Trigger Condition:**  
+  Activates when any sensor reading goes beyond or below set limits.  
+- **Motor Control:**  
+  Implemented via timed GPIO sequence to achieve precise positioning.
 
-Analog Data Acquisition: Sensor inputs are read through the ADC and compared against predefined setpoints.
+---
 
-Actuator Logic:
+### 3. 📡 UART-Based Communication Protocol
 
-Fan, Heater, Cooler, and Sprinkler controlled based on threshold logic.
+- **System Health Feedback:**  
+  Transmitted via UART2 at 9600 baud.  
+- **Message Format:**
 
-Supports both polling and interrupt-based control mechanisms.
+  ```
+  $CONLIM,<TO>,<FROM>,<SENSOR>,<MODE>,<VALUE>,<CHECKSUM>
+  ```
 
-2. 🔄 Stepper Motor-Based Damper Adjustment
-Objective: Adjust air circulation using a damper mechanism driven by a bipolar stepper motor.
+  **Example:**
 
-Trigger Logic: Motor activates when sensor readings cross defined upper or lower thresholds.
+  ```
+  $CONLIM,1,977,1,0,45,85
+  ```
 
-Control Method: GPIO pins sequence controlled via timer-based delay loops for precise angular steps.
+  - `SENSOR`: Channel number (0 = Temp, 1 = Humidity, 2 = CO₂)  
+  - `MODE`: 0 for Upperlimit, 1 for Lowerlimit  
+  - `CHECKSUM`: Simple XOR or modulo-based integrity check  
 
-3. 📡 UART Communication Protocol
-Purpose: Enables system health reporting and feedback for real-time diagnostics.
+- **Receiving Controller:**  
+  Validates checksum, parses sentence, and displays info over UART1.
 
-UART2 Output: Transmits status messages in a defined sentence structure at 9600 baud.
+---
 
-Message Format:
+### 4. 💡 System Features & Safety
 
-php-template
-Copy
-Edit
-$CONLIM,<TO>,<FROM>,<SENSOR>,<MODE>,<VALUE>,<CHECKSUM>
-SENSOR: 0 = Temp, 1 = Humidity, 2 = CO₂
+- **Polling & Interrupts:**  
+  Efficient handling of analog inputs and actuator updates.  
+- **Debug Mode:**  
+  In-system debug via PICkit 3 with breakpoint support.  
+- **UART Log:**  
+  Real-time updates provide transparency and support for closed-loop integration.
 
-MODE: 0 = Upper Limit, 1 = Lower Limit
+---
 
-CHECKSUM: Simple XOR or modulo operation
+## ✅ Project Status
 
-Receiving Logic: Another PIC controller or UART monitor parses the sentence, validates checksum, and displays info.
+| Deliverable                          | Status       |
+|--------------------------------------|--------------|
+| Sensor Simulation via Potentiometer  | ✅ Completed |
+| Actuator Control Logic               | ✅ Completed |
+| Damper Stepper Motor Control         | ✅ Completed |
+| UART Sentence Formatting & Output    | ✅ Completed |
+| Checksum Validation & Display        | ✅ Completed |
 
-4. 💡 System Features & Safety
-Polling & Interrupt Handling: Efficient dual-mode design for sensor and actuator updates.
+---
 
-Debug Mode: Enabled via PICkit 3 for real-time breakpoint debugging and value tracing.
+## 🧪 Testing Highlights
 
-UART Logging: All events transmitted over UART for live tracking and closed-loop control potential.
+- **ADC calibration** tested using multimeter-verified potentiometer values.  
+- **Output logic** verified through LED indicators on GPIO pins.  
+- **Stepper motor** operation validated with LED sequence and test conditions.  
+- **UART messages** logged and verified via Teraterm and PuTTY.  
+- **Checksum validation** tested with both correct and altered data streams.
 
-✅ Project Status
-Deliverable	Status
-Sensor Simulation via Potentiometers	✅ Completed
-Actuator Control Logic	✅ Completed
-Stepper Motor Damper Mechanism	✅ Completed
-UART Message Protocol Implementation	✅ Completed
-Checksum & Sentence Parsing Logic	✅ Completed
+---
 
-🧪 Testing Highlights
-ADC Readings: Calibrated and verified using multimeter-checked potentiometer values.
+## 📩 Contact
 
-Actuator Control: LED indicators used to simulate actuator responses across all threshold scenarios.
+**Developer**: Siddhant  
+📍 Embedded Systems Graduate Student | Fanshawe College  
+📧 [siddhant5100@gmail.com](mailto:siddhant5100@gmail.com)  
+🔗 [LinkedIn](https://www.linkedin.com/in/yourprofile)
 
-Stepper Motor: Logic confirmed using LED sequencing and observed motor steps.
+---
 
-UART Messaging: Monitored and validated using Tera Term and PuTTY.
-
-Checksum Logic: Tested with both valid and tampered inputs for robustness.
-
-📩 Contact
-Developer: Siddhant
-📍 Embedded Systems Graduate Student | Fanshawe College
-📧 Email
-🔗 LinkedIn
+> *Sustainable control meets embedded simplicity — optimizing greenhouse environments for a greener future.*
