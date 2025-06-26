@@ -107,7 +107,7 @@ A compact embedded system for greenhouse automation that simulates and regulates
 **Developer**: Siddhant  
 📍 Embedded Systems Graduate Student | Fanshawe College  
 📧 [siddhant5100@gmail.com](mailto:siddhant5100@gmail.com)  
-🔗 [LinkedIn](https://www.linkedin.com/in/yourprofile)
+🔗 [LinkedIn](https://www.linkedin.com/in/siddhant-mahindrakar-362b761a2/)
 
 ---
 
